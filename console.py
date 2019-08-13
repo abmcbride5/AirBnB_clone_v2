@@ -42,10 +42,17 @@ class HBNBCommand(cmd.Cmd):
             if not line:
                 raise SyntaxError()
             my_list = line.split(" ")
-            a_dict = dict(each.split('=') for each in my_list[1:] if '=' in each)
-            print(a_dict)
-            obj_class = eval("{}()".format(my_list[0]))
-            obj_class.save()
+            obj = eval("{}()".format(my_list[0]))
+            for i in range(len(my_list)):
+                if i == 0:
+                    continue
+                newlist - my_list[e].split("=")
+                key = newlist[0]
+                value = newlist[1]
+                value = value.replace('_',' ')
+                if hasattr(obj, key):
+                    setattr(obj, key, eval(value))
+            obj.save()
             print("{}".format(obj_class.id))
         except SyntaxError:
             print("** class name missing **")
