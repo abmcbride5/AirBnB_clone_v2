@@ -14,7 +14,6 @@ class BaseModel:
     """This class will defines all common attributes/methods
     for other classes
     """
-
     id = Column(String(60), primary_key=True, nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow(),
                         nullable=False)
@@ -24,12 +23,12 @@ class BaseModel:
     def __init__(self, *args, **kwargs):
         """Instantiation of base model class
         Args:
-            args: it won't be used
-            kwargs: arguments for the constructor of the BaseModel
+        args: it won't be used
+        kwargs: arguments for the constructor of the BaseModel
         Attributes:
-            id: unique id generated
-            created_at: creation date
-            updated_at: updated date
+        id: unique id generated
+        created_at: creation date
+        updated_at: updated date
         """
         if kwargs:
             for key, value in kwargs.items():
@@ -37,14 +36,14 @@ class BaseModel:
                     value = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f")
                 if key != "__class__":
                     setattr(self, key, value)
-        else:
-            self.id = str(uuid.uuid4())
-            self.created_at = self.updated_at = datetime.now()
+                else:
+                    self.id = str(uuid.uuid4())
+                    self.created_at = self.updated_at = datetime.now()
 
     def __str__(self):
         """returns a string
         Return:
-            returns a string of class name, id, and dictionary
+        returns a string of class name, id, and dictionary
         """
         return "[{}] ({}) {}".format(
             type(self).__name__, self.id, self.__dict__)
@@ -62,16 +61,19 @@ class BaseModel:
         models.storage.save()
 
     def delete(self):
-        """ deletes the current instance from the storage"""
+        """deletes the current instance from the storage
+        """
         models.storage.delete(self)
 
     def to_dict(self):
         """creates dictionary of the class  and returns
         Return:
-            returns a dictionary of all the key values in __dict__
+        returns a dictionary of all the key values in __dict__
         """
         my_dict = dict(self.__dict__)
         my_dict["__class__"] = str(type(self).__name__)
         my_dict["created_at"] = self.created_at.isoformat()
         my_dict["updated_at"] = self.updated_at.isoformat()
+        if "_sa_instance_state" in my_dict:
+            del my_dict['_sa_instance_state']
         return my_dict
