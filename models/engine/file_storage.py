@@ -44,10 +44,11 @@ class FileStorage:
             my_dict[key] = value.to_dict()
         with open(self.__file_path, 'w', encoding="UTF-8") as f:
             json.dump(my_dict, f)
+
     def delete(self, obj=None):
         """ deletes an object from __objects if it's inside"""
         if obj:
-            key = "{}.{}".format(type(obj)).__name__, obj.id)
+            key = "{}.{}".format(type(obj).__name__, obj.id)
             del self.__objects[key]
 
     def reload(self):
