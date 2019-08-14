@@ -1,6 +1,12 @@
 #!/usr/bin/python3
 """This is the state class"""
+import models
 from models.base_model import BaseModel
+from models.city import City
+import sqlalchemy
+from sqlalchemy import Column, Integer, String
+from sqlalchemy.orm import relationship
+from os import getenv
 
 
 class State(BaseModel):
