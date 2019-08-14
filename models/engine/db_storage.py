@@ -16,8 +16,8 @@ class DBStorage:
     """This class stores instances in tables and
     converts tables to instances
     Attributes:
-        __engine: connection to mysql db
-        __session: sqlalchemy mysql session
+    __engine: connection to mysql db
+    __session: sqlalchemy mysql session
     """
     __engine = None
     __session = None
@@ -29,7 +29,6 @@ class DBStorage:
         dialect: mysql
         driver: mysqldb
         """
-
         user = getenv('HBNB_MYSQL_USER')
         password = getenv('HBNB_MYSQL_PWD')
         host = getenv('HBNB_MYSQL_HOST')
@@ -45,7 +44,7 @@ class DBStorage:
     def all(self, cls=None):
         """query on the current database
         Return:
-            returns a dictionary of object
+        returns a dictionary of object
         """
         a_d = {}
         if cls:
@@ -61,21 +60,27 @@ class DBStorage:
         return a_d
 
     def new(self, obj):
-        """ adds obj to __session"""
+        """adds obj to __session
+        Args:
+        obj: given object
+        """
         if obj:
             self.__session.add(obj)
 
     def save(self):
-        """ commit changes to __session"""
+        """commit changes to __session
+        """
         self.__session.commit()
 
     def delete(self, obj=None):
-        """ delete object from __session if inside"""
+        """delete object from __session if it's inside
+        """
         if obj:
             self.__session.delete(obj)
 
     def reload(self):
-        """ serialize the file path to JSON file path """
+        """serialize the file path to JSON file path
+        """
         Base.metadata.create_all(self.__engine)
         session_factory = sessionmaker(bind=self.__engine,
                                        expire_on_commit=False)
