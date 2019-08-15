@@ -7,7 +7,7 @@ from models.city import City
 from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, MetaData
 from sqlalchemy.orm import sessionmaker, scoped_session
 from os import getenv
 
@@ -40,7 +40,7 @@ class DBStorage:
         self.__engine = create_engine(sql, pool_pre_ping=True)
 
         if getenv('HBNB_ENV') is not None and getenv('HBNB_ENV') == "test":
-            Base.metadata.drop_all(self.__engine)
+            Base.metadata.drop_all(bind=self.__engine)
 
     def all(self, cls=None):
         """query on the current database
