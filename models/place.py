@@ -6,6 +6,18 @@ import sqlalchemy
 from sqlalchemy import Column, String, Integer, Float, ForeignKey
 from sqlalchemy.orm import relationship
 
+metadata = Base.metadata
+
+association_table = Table('place_amenity', metadata,
+                          Column('place_id', String(60),
+                                 ForeignKey(places.id),
+                                 primarykey=True,
+                                 nullable=False),
+                          Column('amenity_id', String(60),
+                                 ForeignKey(amenities.id),
+                                 primaykey=True,
+                                 nullable=False))
+
 
 class Place(BaseModel, Base):
     """This is the class for Place
@@ -42,6 +54,9 @@ class Place(BaseModel, Base):
         reviews = relationship("Review", backref="place",
                                cascade="all, delete-orphan")
 
+        amenities = relationship("place_amenity",
+                                 secondary="Amenity",
+                                 viewonly=False)
     else:
         @property
         def reviews(self):
@@ -55,4 +70,16 @@ class Place(BaseModel, Base):
                     review_list.append(obj)
             return review_list
 
-    amenity_ids = []
+        @property
+        def amenities(self):
+            """ returns list of Amenity instances"""
+            return amenity_ids
+
+        @amenities.setter
+        def amenities(self):
+            """ stores list of amenities"""
+            objects = models.storage.all(Amenity)
+            amenity_ids = []
+            for obj in objects.values():
+                if obj.amenity_id = self.id:
+                    amenity_ids.append(obj.id)
