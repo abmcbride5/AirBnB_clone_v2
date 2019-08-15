@@ -12,8 +12,9 @@ from os import getenv
 class State(BaseModel, Base):
     """This is the class for State
     Attributes:
-    name: input name
+        name: input name
     """
+    # DBStorage class attribute
     __tablename__ = "states"
 
     if getenv('HBNB_TYPE_STORAGE') == 'db':
@@ -21,6 +22,7 @@ class State(BaseModel, Base):
                               cascade="all, delete-orphan")
         name = Column(String(128), nullable=False)
 
+    # FileStorage getter attribute
     else:
         name = ""
 
@@ -30,8 +32,8 @@ class State(BaseModel, Base):
             current State id
             """
             objects = models.storage.all(City)
-            a_list = []
+            city_list = []
             for obj in objects.values():
                 if obj.state_id == self.id:
-                    a_list.append(obj)
-            return a_list
+                    city_list.append(obj)
+            return city_list
