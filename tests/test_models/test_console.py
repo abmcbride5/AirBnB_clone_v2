@@ -10,7 +10,7 @@ import MySQLdb
 class TestConsole(unittest.TestCase):
     """ this test that the console is working with update"""
 
-    def Test_create_fs(self):
+    def test_create_fs(self):
         """ test do create with classes"""
         state_objects = models.storage.all(State)
         l = len(state_objects)
@@ -26,7 +26,7 @@ class TestConsole(unittest.TestCase):
         new_am_len = len(amenity_after)
         self.asserTrue(new_am_len > am_len)
 
-    def Test_create_db(self):
+    def test_create_db(self):
         """ test creation of tables"""
         conn = MySQLdb.connet(host="localhost", user="hbnb_dev",
                               passwd="hbnb_dev_pwd", port=3306,
