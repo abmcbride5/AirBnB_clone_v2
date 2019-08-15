@@ -54,8 +54,8 @@ class Place(BaseModel, Base):
         reviews = relationship("Review", backref="place",
                                cascade="all, delete-orphan")
 
-        amenities = relationship("Amenity",
-                                 secondary=place_amenity,
+        amenities = relationship("place_menity",
+                                 secondary="Amenity",
                                  viewonly=False)
     else:
         @property
@@ -73,15 +73,13 @@ class Place(BaseModel, Base):
         @property
         def amenities(self):
             """ returns list of Amenity instances"""
-             a_list = []
-             objects = storage.all(Amenity)
-             for obj in objects:
-                 if obj.id not in amenity_ids:
-                     a_list.append(obj)
-              return a_list
+             return amenity_ids
 
         @amenities.setter
         def amenities(self):
             """ stores list of amenities"""
-            if type(obj).__name__ = "Amentiy":
-                    self.amenity_ids.append(obj)
+            objects = models.storage.all(Amenity)
+            amenity_ids = []
+            for obj in objects.values():
+                if obj.amenity_id = self.id:
+                    amenity_ids.append(obj.id)
