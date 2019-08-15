@@ -3,8 +3,8 @@
 import uuid
 import models
 from datetime import datetime
-from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, DateTime, String
+from sqlalchemy.ext.declarative import declarative_base
 
 
 Base = declarative_base()
@@ -23,12 +23,12 @@ class BaseModel:
     def __init__(self, *args, **kwargs):
         """Instantiation of base model class
         Args:
-        args: it won't be used
-        kwargs: arguments for the constructor of the BaseModel
+            args: it won't be used
+            kwargs: arguments for the constructor of the BaseModel
         Attributes:
-        id: unique id generated
-        created_at: creation date
-        updated_at: updated date
+            id: unique id generated
+            created_at: creation date
+            updated_at: updated date
         """
         if kwargs:
             for key, value in kwargs.items():
@@ -36,14 +36,14 @@ class BaseModel:
                     value = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f")
                 if key != "__class__":
                     setattr(self, key, value)
-                else:
-                    self.id = str(uuid.uuid4())
-                    self.created_at = self.updated_at = datetime.now()
+        else:
+            self.id = str(uuid.uuid4())
+            self.created_at = self.updated_at = datetime.now()
 
     def __str__(self):
         """returns a string
         Return:
-        returns a string of class name, id, and dictionary
+            returns a string of class name, id, and dictionary
         """
         return "[{}] ({}) {}".format(
             type(self).__name__, self.id, self.__dict__)
@@ -68,7 +68,7 @@ class BaseModel:
     def to_dict(self):
         """creates dictionary of the class  and returns
         Return:
-        returns a dictionary of all the key values in __dict__
+            returns a dictionary of all the key values in __dict__
         """
         my_dict = dict(self.__dict__)
         my_dict["__class__"] = str(type(self).__name__)
