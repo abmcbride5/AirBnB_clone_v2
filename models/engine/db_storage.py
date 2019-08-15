@@ -56,7 +56,7 @@ class DBStorage:
             objects += self.__session.query(User).all()
             objects += self.__session.query(Place).all()
             objects += self.session.query(Review).all()
-            objects += self.session.query(Amenity).all()
+            #objects += self.session.query(Amenity).all()
 
         for obj in objects:
             key = type(obj).__name__ + "." + obj.id
