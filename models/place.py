@@ -1,9 +1,9 @@
 #!/usr/bin/python3
 """This is the place class"""
 from models.base_model import BaseModel, Base
+from os import getenv
 from sqlalchemy import Column, String, Integer, Float, ForeignKey
 from sqlalchemy.orm import relationship
-from os import getenv
 
 
 class Place(BaseModel, Base):
@@ -21,15 +21,19 @@ class Place(BaseModel, Base):
         longitude: longitude in float
         amenity_ids: list of Amenity ids
     """
-    __tablename__ = "places"
-    city_id = Column(String(60), ForeignKey('cities.id'), nullable=False)
-    user_id = Column(String(60), ForeignKey('users.id'), nullable=False)
+    __tablename__ == "places"
+    city_id = Column(String(60), ForeignKey('cities.id'),
+                     nullable=False)
+    user_id = Column(String(60), ForeignKey('users.id'),
+                     nullable=False)
     name = Column(String(128), nullable=False)
     description = Column(String(1024), nullable=True)
     number_rooms = Column(Integer, default=0, nullable=False)
-    number_bathrooms = Column(Integer, default=0, nullable=False)
+    number_bathrooms = Column(Integer, default=0,
+                              nullable=False)
     max_guest = Column(Integer, default=0, nullable=False)
-    price_by_night = Column(Integer, default=0, nullable=False)
+    price_by_night = Column(Integer, default=0,
+                            nullable=False)
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
 
@@ -40,7 +44,9 @@ class Place(BaseModel, Base):
     else:
         @property
         def reviews(self):
-            """ returns list of Review instances with same place_id"""
+            """returns list of Review instances with place_id equal
+            to current Place.id
+            """
             objects = models.storage.all(Review)
             review_list = []
             for obj in objects.values():
