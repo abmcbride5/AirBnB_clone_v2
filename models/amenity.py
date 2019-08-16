@@ -5,6 +5,7 @@ from sqlalchemy import Column, String
 import sqlalchemy
 from sqlalchemy.orm import relationship
 
+
 class Amenity(BaseModel):
     """This is the class for Amenity
     Attributes:

@@ -28,7 +28,7 @@ class TestConsole(unittest.TestCase):
 
     def test_create_db(self):
         """ test creation of tables"""
-        conn = MySQLdb.connet(host="localhost", user="hbnb_dev",
+        conn = MySQLdb.connect(host="localhost", user="hbnb_dev",
                               passwd="hbnb_dev_pwd", port=3306,
                               db="hbnb_dev_db", charset="utf8")
         cur = conn.cursor()
@@ -40,3 +40,6 @@ class TestConsole(unittest.TestCase):
         counter = cur.fetchall()
         new_state_count = len(counter)
         self.assertTrue(new_state_count > state_count)
+
+if __name__ == '__main__':
+    unittest.main()
