@@ -4,6 +4,7 @@ import unittest
 import pep8
 import os
 import contextlib
+import MySQLdb
 from models.base_model import BaseModel
 from models.user import User
 from models.state import State
@@ -24,7 +25,7 @@ class TestDBStorage(unittest.TestCase):
         cls.user.first_name = "Kev"
         cls.user.last_name = "Yo"
         cls.user.email = "1234@yahoo.com"
-        cls.storage = FileStorage()
+        cls.storage = DBStorage()
 
     @classmethod
     def teardown(cls):
