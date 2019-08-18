@@ -25,7 +25,14 @@ class FileStorage:
         Return:
             returns a dictionary of __object
         """
-        return self.__objects
+        if cls:
+            a_dict = {}
+            for key, value in self.__objects.items():
+                if key.split('.')[0] == cls.__name__:
+                    a_dict[key] = value
+            return a_dict
+        else:
+            return self.__objects
 
     def new(self, obj):
         """sets __object to given obj
@@ -46,7 +53,8 @@ class FileStorage:
             json.dump(my_dict, f)
 
     def delete(self, obj=None):
-        """ deletes an object from __objects if it's inside"""
+        """delete object from __objects if it's inside
+        """
         if obj:
             key = "{}.{}".format(type(obj).__name__, obj.id)
             del self.__objects[key]
