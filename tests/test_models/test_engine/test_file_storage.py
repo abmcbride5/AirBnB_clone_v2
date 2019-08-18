@@ -4,6 +4,7 @@ import unittest
 import pep8
 import json
 import os
+import contextlib
 from models.base_model import BaseModel
 from models.user import User
 from models.state import State
@@ -44,7 +45,6 @@ class TestFileStorage(unittest.TestCase):
         p = style.check_files(['models/engine/file_storage.py'])
         self.assertEqual(p.total_errors, 0, "fix pep8")
 
-    @unittest.skipIf(getenv('HBNB_ENV') == 'db')
     def test_all(self):
         """tests if all works in File Storage"""
         storage = FileStorage()
@@ -53,7 +53,6 @@ class TestFileStorage(unittest.TestCase):
         self.assertEqual(type(obj), dict)
         self.assertIs(obj, storage._FileStorage__objects)
 
-    @unittest.skipIf(getenv('HBNB_ENV') == 'db')
     def test_new(self):
         """test when new is created"""
         storage = FileStorage()
@@ -65,7 +64,6 @@ class TestFileStorage(unittest.TestCase):
         key = user.__class__.__name__ + "." + str(user.id)
         self.assertIsNotNone(obj[key])
 
-    @unittest.skipIf(getenv('HBNB_ENV') == 'db')
     def test_reload_filestorage(self):
         """
         tests reload
@@ -75,18 +73,14 @@ class TestFileStorage(unittest.TestCase):
         path = os.path.join(Root, "file.json")
         with open(path, 'r') as f:
             lines = f.readlines()
-        try:
+        with contextlib.suppress(FileNotFoundError):
             os.remove(path)
-        except:
-            pass
         self.storage.save()
         with open(path, 'r') as f:
             lines2 = f.readlines()
         self.assertEqual(lines, lines2)
-        try:
+        with contextlib.suppress(FileNotFoundError):
             os.remove(path)
-        except:
-            pass
         with open(path, "w") as f:
             f.write("{}")
         with open(path, "r") as r:

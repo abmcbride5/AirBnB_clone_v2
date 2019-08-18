@@ -4,7 +4,6 @@ import unittest
 import pep8
 import os
 import contextlib
-import MySQLdb
 from models.base_model import BaseModel
 from models.user import User
 from models.state import State
