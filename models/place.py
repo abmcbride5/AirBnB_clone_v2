@@ -2,9 +2,20 @@
 """This is the place class"""
 from models.base_model import BaseModel, Base
 from os import getenv
-import sqlalchemy
-from sqlalchemy import Column, String, Integer, Float, ForeignKey
+from sqlalchemy import Column, Table, String, Integer, Float, ForeignKey
 from sqlalchemy.orm import relationship
+
+
+if getenv('HBNB_TYPE_STORAGE') == 'db':
+    place_amenity = Table('place_amenity', Base.metadata,
+                          Column('place_id', String(60),
+                                 ForeignKey('places.id'),
+                                 primary_key=True,
+                                 nullable=False),
+                          Column('amenity_id', String(60),
+                                 ForeignKey('amenities.id'),
+                                 primary_key=True,
+                                 nullable=False))
 
 
 class Place(BaseModel, Base):
@@ -17,11 +28,12 @@ class Place(BaseModel, Base):
         number_rooms: number of room in int
         number_bathrooms: number of bathrooms in int
         max_guest: maximum guest in int
-        price_by_night:: pice for a staying in int
-        latitude: latitude in flaot
+        price_by_night: price for a staying in int
+        latitude: latitude in float
         longitude: longitude in float
         amenity_ids: list of Amenity ids
     """
+
     __tablename__ = "places"
     city_id = Column(String(60), ForeignKey('cities.id'),
                      nullable=False)
@@ -38,12 +50,12 @@ class Place(BaseModel, Base):
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
 
-    if getenv('HBNB_ENV') == 'db':
-        reviews = relationship("Review", backref="place",
-                               cascade="all, delete-orphan")
+    amenity_ids = []
 
-        amenities = relationship("place_menity",
-                                 secondary="Amenity",
+    if getenv('HBNB_TYPE_STORAGE') == 'db':
+        reviews = relationship("Review", backref="place")
+        amenities = relationship("Amenity",
+                                 secondary=place_amenity,
                                  viewonly=False)
     else:
         @property
@@ -51,9 +63,33 @@ class Place(BaseModel, Base):
             """returns list of Review instances with place_id equal
             to current Place.id
             """
-            objects = models.storage.all(Review)
-            review_list = []
-            for obj in objects.values():
+            from models import storage
+            from models.review import Review
+            objects = storage.all(Review)
+            a_list = []
+            for obj in objects:
                 if obj.place_id == self.id:
-                    review_list.append(obj)
-            return review_list
+                    a_list.append(obj)
+            return a_list
+
+        @property
+        def amenities(self):
+            """returns list of Amenity instances with amenity_id equal
+            to current Place.id
+            """
+            from models import storage
+            from models.amenity import Amenity
+            a_list = []
+            objects = storage.all(Amenity)
+            for obj in objects:
+                if obj.id in amenity_ids:
+                    a_list.append(obj)
+            return a_list
+
+        @amenities.setter
+        def amenities(self, obj):
+            """handles append method for adding Amenity.id to attribute
+            amenity_ids.
+            """
+            if type(obj).__name__ == "Amenity":
+                self.amenity_ids.append(obj)

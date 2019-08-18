@@ -17,23 +17,20 @@ class State(BaseModel, Base):
     # DBStorage class attribute
     __tablename__ = "states"
 
-    if getenv('HBNB_TYPE_STORAGE') == 'db':
-        cities = relationship("City", backref="state",
-                              cascade="all, delete-orphan")
-        name = Column(String(128), nullable=False)
+    name = Column(String(128), nullable=False)
 
+    if getenv('HBNB_TYPE_STORAGE') == 'db':
+        cities = relationship("City", backref="state")
     # FileStorage getter attribute
     else:
-        name = ""
-
         @property
         def cities(self):
             """returns list of City instances with state_id matching the
             current State id
             """
             objects = models.storage.all(City)
-            city_list = []
-            for obj in objects.values():
+            a_list = []
+            for obj in objects:
                 if obj.state_id == self.id:
-                    city_list.append(obj)
-            return city_list
+                    a_list.append(obj)
+            return a_list

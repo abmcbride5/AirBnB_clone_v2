@@ -3,8 +3,8 @@
 import uuid
 import models
 from datetime import datetime
-from sqlalchemy import Column, DateTime, String
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import Column, DateTime, String
 
 
 Base = declarative_base()
@@ -36,6 +36,12 @@ class BaseModel:
                     value = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f")
                 if key != "__class__":
                     setattr(self, key, value)
+            if not self.id:
+                setattr(self, 'id', str(uuid.uuid4()))
+            if not self.created_at:
+                self.created_at = datetime.now()
+            if not self.updated_at:
+                self.updated_at = datetime.now()
         else:
             self.id = str(uuid.uuid4())
             self.created_at = self.updated_at = datetime.now()
@@ -46,7 +52,7 @@ class BaseModel:
             returns a string of class name, id, and dictionary
         """
         return "[{}] ({}) {}".format(
-            type(self).__name__, self.id, self.__dict__)
+            type(self).__name__, self.id, self.to_dict())
 
     def __repr__(self):
         """return a string representaion
