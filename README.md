@@ -52,3 +52,8 @@ Ex:
 Additionally, the console supports `<class name>.<command>(<parameters>)` syntax.
 Ex:
 `City.show(my_city_id)`
+
+
+# Deploy Static  
+
+This project now contains scripts written in python and bash that assist in the deplyment of the web static.
