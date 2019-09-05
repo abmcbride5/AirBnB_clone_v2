@@ -9,12 +9,14 @@ app = Flask(__name__)
 @app.route('/states_list', strict_slashes=False)
 def states_list():
     """ list states in database"""
-    
-    obj = storage.all("States")
-    for key, value in obj.items():
-        lis = key.split('.')
-        render_template('7-states_list.html', id=lis[1])
-        render_template('7-states_list.html', name)
+    states = storage.all("State")
+    return render_template('7-states_list.html', states=states)
+
+
+@app.teardown_appcontext
+def close_session(self):
+    """ close"""
+    storage.close()
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000)
