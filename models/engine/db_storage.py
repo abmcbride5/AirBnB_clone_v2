@@ -38,6 +38,7 @@ class DBStorage:
         sql = "mysql+mysqldb://{}:{}@{}/{}".format(user, password,
                                                    host, database)
         self.__engine = create_engine(sql, pool_pre_ping=True)
+        self.all_cls = {"State": State, "City": City, "User": User, "Place": Place, "Review": Review, "Amenity": Amenity}
 
         if getenv('HBNB_ENV') is not None and getenv('HBNB_ENV') == "test":
             Base.metadata.drop_all(self.__engine)
@@ -49,17 +50,14 @@ class DBStorage:
         """
         a_d = {}
         if cls:
-            objects = self.__session.query(eval(cls)).all()
+            cls = self.all_cls[cls]
+            for objects in self.__session.query(cls).all():
+                a_d[objects.id] = objects 
         else:
-            objects = self.__session.query(City).all()
-            objects += self.__session.query(State).all()
-            objects += self.__session.query(User).all()
-            objects += self.__session.query(Place).all()
-            objects += self.__session.query(Review).all()
-            objects += self.__session.query(Amenity).all()
-        for obj in objects:
-            key = type(obj).__name__ + "." + obj.id
-            a_d[key] = obj
+            for cls in self.all_cls.values():
+                if self.__session.query(cls).all():
+                    for objects in self.__session.query(cls).all():
+                        a_d[objects.id] = objects 
         return a_d
 
     def new(self, obj):
