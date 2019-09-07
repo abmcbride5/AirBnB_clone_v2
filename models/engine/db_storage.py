@@ -38,7 +38,8 @@ class DBStorage:
         sql = "mysql+mysqldb://{}:{}@{}/{}".format(user, password,
                                                    host, database)
         self.__engine = create_engine(sql, pool_pre_ping=True)
-        self.all_cls = {"State": State, "City": City, "User": User, "Place": Place, "Review": Review, "Amenity": Amenity}
+        self.all_cls = {"State": State, "City": City, "User": User,
+                        "Place": Place, "Review": Review, "Amenity": Amenity}
 
         if getenv('HBNB_ENV') is not None and getenv('HBNB_ENV') == "test":
             Base.metadata.drop_all(self.__engine)
@@ -52,12 +53,12 @@ class DBStorage:
         if cls:
             cls = self.all_cls[cls]
             for objects in self.__session.query(cls).all():
-                a_d[objects.id] = objects 
+                a_d[objects.id] = objects
         else:
             for cls in self.all_cls.values():
                 if self.__session.query(cls).all():
                     for objects in self.__session.query(cls).all():
-                        a_d[objects.id] = objects 
+                        a_d[objects.id] = objects
         return a_d
 
     def new(self, obj):
