@@ -10,7 +10,7 @@ app = Flask(__name__)
 def hbnb_filters():
     """ loads all states, cities and amenities for the hbnb site"""
     states = storage.all("State")
-    cities = storage.all("Cities")
+    cities = storage.all("City")
     amenities = storage.all("Amenity")
     return render_template('10-hbnb_filters.html', states=states,
                            cities=cities, amenities=amenities)
