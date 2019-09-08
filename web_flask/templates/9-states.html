@@ -7,8 +7,9 @@
 		{% if states %}<H1>States</H1>
 			<UL>{% for state in states.values()|sort(attribute='name') %}
 				<LI>{{ state.id}}: <B>{{ state.name }}</B>
-				</LI>
-			</UL>{% endfor %}
+				</LI>{% endfor %}
+
+			</UL>
 		{% elif state %}<H1>{{ state.name}}</H1>
 			<H3>Cities:</H3>
 			<UL>{% for city in cities.values()|sort(attribute='name')%}{% if state.id == city.state_id %}
