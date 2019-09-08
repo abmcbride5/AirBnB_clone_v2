@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<HTML lang="en">
+	<HEAD>
+		<TITLE>HBNB</TITLE>
+	</HEAD>
+	<BODY>
+		{% if states %}<H1>States</H1>
+			<UL>{% for state in states.values()|sort(attribute='name') %}
+				<LI>{{ state.id}}: <B>{{ state.name }}</B>
+				</LI>
+			</UL>{% endfor %}
+		{% elif state %}<H1>States</H1>
+			<UL>
+				<LI>{{ state.id}}: <B>{{ state.name }}</B>
+					<UL>{% for city in cities.values()|sort(attribute='name')%}{% if state.id == city.state_id %}
+						<LI>{{ city.id }}: <B>{{city.name}}</B></LI> {% endif %}{% endfor %}
+					</UL>
+				</LI>
+			</UL>{% endif %}
+	</BODY>
+</HTML>
