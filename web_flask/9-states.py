@@ -18,7 +18,7 @@ def states_id(id=""):
                 this_state = state
                 return render_template('9-states.html',
                                        state=this_state, cities=cities)
-        no = "Not Found!"
+        no = "Not found!"
         return render_template('9-states.html', no=no)
     return render_template('9-states.html', states=states, cities=cities)
 
