@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """ filters for hbnb site"""
-from flask import Flask, render_templates
-from modesl import stroage
+from flask import Flask, render_template
+from models import storage
 
 app = Flask(__name__)
 
