@@ -9,13 +9,10 @@
 				<LI>{{ state.id}}: <B>{{ state.name }}</B>
 				</LI>
 			</UL>{% endfor %}
-		{% elif state %}<H1>States</H1>
-			<UL>
-				<LI>{{ state.id}}: <B>{{ state.name }}</B>
-					<UL>{% for city in cities.values()|sort(attribute='name')%}{% if state.id == city.state_id %}
-						<LI>{{ city.id }}: <B>{{city.name}}</B></LI> {% endif %}{% endfor %}
-					</UL>
-				</LI>
+		{% elif state %}<H1>{{ state.name}}</H1>
+			<H3>Cities:</H3>
+			<UL>{% for city in cities.values()|sort(attribute='name')%}{% if state.id == city.state_id %}
+				<LI>{{ city.id }}: <B>{{city.name}}</B></LI> {% endif %}{% endfor %}
 			</UL>{% endif %}
 	</BODY>
 </HTML>
