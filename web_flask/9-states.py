@@ -16,8 +16,9 @@ def states_id(id=""):
         for state in states.values():
             if state.id == id:
                 this_state = state
-        return render_template('9-states.html',
-                               state=this_state, cities=cities)
+                return render_template('9-states.html',
+                                       state=this_state, cities=cities)
+        return render_template('9-states.html', no=no)
     return render_template('9-states.html', states=states, cities=cities)
 
 
